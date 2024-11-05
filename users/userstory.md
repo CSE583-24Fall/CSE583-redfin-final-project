@@ -15,3 +15,9 @@ Understand factors what affect the real-estate price and make best
 judgements for the clients. 
 Comprehensive functions and high granularity information
 Data and dashboard, but would love to delve into details.
+
+Components: Dashboards for users to visualize the history of real-estate 
+data and also the predictions of future real-estate trends.
+The backend is SQL database which include the original data as well as 
+predictions through machine learning, and export them to Tableau for 
+visualizations.
