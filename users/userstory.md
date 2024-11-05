@@ -16,8 +16,12 @@ judgements for the clients.
 Comprehensive functions and high granularity information
 Data and dashboard, but would love to delve into details.
 
-Components: Dashboards for users to visualize the history of real-estate 
-data and also the predictions of future real-estate trends.
-The backend is SQL database which include the original data as well as 
-predictions through machine learning, and export them to Tableau for 
-visualizations.
+Components:
+-  Dashboards:
+	- What it does:  for users to visualize the history of real-estate data and also the predictions of future real-estate trends.
+	- Input: Read in DQL database for historical data
+	- Output: Visualization
+- The backend is SQL database:
+	- What it does: contain all the data extracted from online, 
+	- Input: the original data as well as predictions through machine learning,
+	- Output: export them to Tableau for visualizations.
