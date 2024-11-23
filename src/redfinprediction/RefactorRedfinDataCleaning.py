@@ -1,6 +1,3 @@
-# Install the required library
-%pip install azure-storage-blob
-
 # Import necessary libraries
 from azure.storage.blob import BlobServiceClient
 import pandas as pd
