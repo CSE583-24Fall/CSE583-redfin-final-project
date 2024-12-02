@@ -1,105 +1,68 @@
-# Import necessary libraries
-from azure.storage.blob import BlobServiceClient
+import os
 import pandas as pd
-import io
+from datetime import datetime
+from redfindatacleaning import load_data_from_file, filter_dataframe_by_date, save_dataframe_to_file, save_metadata_to_file
 
-
-# Utility functions
-def create_blob_service_client(storage_account_name, storage_account_access_key):
-    return BlobServiceClient(
-        account_url=f"https://{storage_account_name}.blob.core.windows.net/",
-        credential=storage_account_access_key
-    )
-
-
-def get_container_client(blob_service_client, container_name):
-    return blob_service_client.get_container_client(container_name)
-
-
-def download_blob_to_dataframe(container_client, blob_name, separator='\t'):
-    blob_client = container_client.get_blob_client(blob_name)
-    stream = blob_client.download_blob()
-    return pd.read_csv(io.BytesIO(stream.readall()), sep=separator, error_bad_lines=False)
-
-
-def filter_dataframe_by_date(df, date_column, start_date):
-    df[date_column] = pd.to_datetime(df[date_column])
-    filtered_df = df[df[date_column] > start_date]
-    filtered_df.dropna(inplace=True)
-    return filtered_df
-
-
-def save_dataframe_to_blob(container_client, dataframe, filename):
-    output_stream = io.StringIO()
-    dataframe.to_csv(output_stream, index=False)
-    blob_client = container_client.get_blob_client(filename)
-    blob_client.upload_blob(output_stream.getvalue(), overwrite=True)
-    return filename
-
-
-def read_metadata_from_blob(container_client, metadata_filename):
-    blob_client = container_client.get_blob_client(metadata_filename)
-    try:
-        metadata_content = blob_client.download_blob().readall().decode('utf-8')
-        data_filename, last_processed_date = metadata_content.split('\n')
-        return data_filename, last_processed_date
-    except Exception as e:
-        print(f"Error reading metadata: {e}")
+def load_metadata(metadata_filename, output_folder):
+    """Load metadata from the file, returning the last processed file and date."""
+    metadata_path = os.path.join(output_folder, metadata_filename)
+    if os.path.exists(metadata_path):
+        with open(metadata_path, 'r') as file:
+            lines = file.readlines()
+            last_processed_file = lines[0].strip()  # Extract the last processed file name
+            last_processed_date = lines[1].strip()  # Extract the last processed date
+            return last_processed_file, last_processed_date
+    else:
+        # If metadata file doesn't exist, return None for both values
         return None, None
 
-
-def save_metadata_to_blob(container_client, metadata_filename, data_filename, max_period_end_str):
-    metadata_content = f"{data_filename}\n{max_period_end_str}"
-    blob_client = container_client.get_blob_client(metadata_filename)
-    blob_client.upload_blob(metadata_content, overwrite=True)
-
-
-# Main function for the incremental run
-def process_incremental_run(storage_account_name, storage_account_access_key, container_name, blob_name, metadata_filename, output_folder):
-    blob_service_client = create_blob_service_client(storage_account_name, storage_account_access_key)
-    container_client = get_container_client(blob_service_client, container_name)
-
-    data_filename, last_processed_date = read_metadata_from_blob(container_client, metadata_filename)
-
-    if not last_processed_date:
-        print("No metadata found. Please run the initial process first.")
+# Incremental loading function
+def process_incremental_run(raw_data_folder, metadata_filename, output_folder):
+    # Load metadata (last processed file and date)
+    last_processed_file, last_processed_date = load_metadata(metadata_filename, output_folder)
+    
+    # If there's no metadata or the file is empty, start from the beginning
+    if last_processed_date is None:
+        print("Metadata file not found or empty. No previous data found.")
         return
 
-    print(f"Last processed date: {last_processed_date}")
+    # Convert the last processed date to a datetime object
+    last_processed_date = pd.to_datetime(last_processed_date)
 
-    df = download_blob_to_dataframe(container_client, blob_name)
+    # Find the raw data file that contains data after the last processed date
+    raw_file_path = os.path.join(raw_data_folder, "city_market_tracker.tsv")
+    df = load_data_from_file(raw_file_path)
+    
+    # Filter the data by the last processed date
     filtered_df = filter_dataframe_by_date(df, 'period_end', last_processed_date)
-
+    
+    # If there's no new data to process, notify and exit
     if filtered_df.empty:
-        print("No new data to process.")
+        print(f"No new data after {last_processed_date.strftime('%Y-%m-%d')}.")
         return
 
+    # Get the maximum period_end date for the new data
     max_period_end = filtered_df['period_end'].max()
     max_period_end_str = max_period_end.strftime('%Y-%m-%d')
-    new_output_filename = f"{output_folder}/city_market_tracker_incremental_after_{last_processed_date}_{max_period_end_str}.csv"
 
-    save_dataframe_to_blob(container_client, filtered_df, new_output_filename)
-    save_metadata_to_blob(container_client, metadata_filename, new_output_filename, max_period_end_str)
-
-    print(f"Incremental run completed. Data saved to: {new_output_filename}")
-    print(f"Metadata updated to reflect last processed date: {max_period_end_str}")
-
+    # Define the output file name for incremental data
+    output_filename = f"city_market_tracker_incremental_after_{last_processed_date.strftime('%Y-%m-%d')}_{max_period_end_str}.csv"
+    
+    # Save the filtered data
+    output_file_path = os.path.join(output_folder, output_filename)
+    save_dataframe_to_file(filtered_df, output_file_path)
+    
+    # Update the metadata with the new filename and the latest period_end date
+    save_metadata_to_file(metadata_filename, output_filename, max_period_end_str, output_folder)
+    
+    print(f"Incremental run completed. Data saved to: {output_file_path}")
+    print(f"Metadata updated to: {os.path.join(output_folder, metadata_filename)}")
 
 # Example usage
 if __name__ == "__main__":
-    # Azure Blob Storage credentials
-    storage_account_name = "redfinforcse583"
-    storage_account_access_key = "Qid0jauQrk38wT+G7WDaJ1LQizsFQd+J8LV2hgsMA2/QmovEJX8c0RPtnfQjqAy2Izz2eTmwNXl2+ASt238BiQ=="
-    container_name = "rawdatabucket"
-    blob_name = "city_market_tracker.tsv"
-    metadata_filename = "cleaned_data/initial_run_filename.txt"
-    output_folder = "cleaned_data"
+    # Define directories and parameters
+    raw_data_folder = "../../data/raw"  # Folder where raw data is stored
+    metadata_filename = "../../data/processed/initial_run_filename.txt"  # Metadata file from the initial run
+    output_folder = "../../data/processed"  # Folder to save cleaned data
 
-    process_incremental_run(
-        storage_account_name,
-        storage_account_access_key,
-        container_name,
-        blob_name,
-        metadata_filename,
-        output_folder
-    )
+    process_incremental_run(raw_data_folder, metadata_filename, output_folder)
