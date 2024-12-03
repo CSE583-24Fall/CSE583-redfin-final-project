@@ -58,7 +58,7 @@ def find_best_order(data, column, seasonal=False, seasonal_period=1, return_para
         stepwise=True
     )
     return auto_model.order, auto_model.seasonal_order
-        
+
 def train_arima(df, column, order):
     """
     Train an ARIMA model on the given data.
@@ -98,7 +98,7 @@ def train_sarimax(df, column, order, seasonal_order):
     sarimax_model = SARIMAX(y_train, exog=X_train, order=order, seasonal_order=seasonal_order)
     sarimax_result = sarimax_model.fit(disp=False)
     return sarimax_result
-    
+
 def save_model_to_pickle(model, filename):
     """
     Save a model to a file using pickle.
@@ -119,37 +119,27 @@ def save_model_to_pickle(model, filename):
         print(f"Model successfully saved to {output_path}.")
     except Exception as e:
         print(f"An error occurred while saving the model: {e}")
-        
-# def main(file_path, arima_filename, sarimax_filename):
-#     # Load and preprocess data
-#     df = load_and_preprocess_data(file_path)
-    
-#     # Find best orders
-#     arima_order, _ = find_best_order(df, 'median_sale_price', seasonal=False)
-#     sarimax_order, seasonal_order = find_best_order(df, 'median_sale_price', seasonal=True, seasonal_period=12)
-    
-#     # Train and save ARIMA model
-#     arima_result = train_arima(df, 'median_sale_price', arima_order)
-#     save_model_to_pickle(arima_result, arima_filename)
-    
-#     # Train and save SARIMAX model
-#     sarimax_result = train_sarimax(df, 'median_sale_price', sarimax_order, seasonal_order)
-#     save_model_to_pickle(sarimax_result, sarimax_filename)
 
-# # Parameters for training
-# file_path = os.path.join(DATA_PATH, "train_data.csv")
-# arima_filename = "arima_final.pkl"
-# sarimax_filename = "sarimax_final.pkl"
+def main(file_path, arima_filename, sarimax_filename):
+    # Load and preprocess data
+    df = load_and_preprocess_data(file_path)
 
+    # Find best orders
+    arima_order, _ = find_best_order(df, 'median_sale_price', seasonal=False)
+    sarimax_order, seasonal_order = find_best_order(df, 'median_sale_price', seasonal=True, seasonal_period=12)
 
-# # Run the main function
-# if __name__ == "__main__":
-#     main(file_path, arima_filename, sarimax_filename)
-   
+    # Train and save ARIMA model
+    arima_result = train_arima(df, 'median_sale_price', arima_order)
+    save_model_to_pickle(arima_result, arima_filename)
 
+    # Train and save SARIMAX model
+    sarimax_result = train_sarimax(df, 'median_sale_price', sarimax_order, seasonal_order)
+    save_model_to_pickle(sarimax_result, sarimax_filename)
 
+# Parameters for training
+file_path = os.path.join(DATA_PATH, "train_data.csv")
+arima_filename = "arima_final.pkl"
+sarimax_filename = "sarimax_final.pkl"
 
-
-
-
-
+if __name__ == "__main__":
+    main(file_path, arima_filename, sarimax_filename)
