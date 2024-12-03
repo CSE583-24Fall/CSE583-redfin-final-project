@@ -18,7 +18,7 @@ def load_data_from_file(file_path, separator='\t'):
 def filter_dataframe_by_date(df, date_column, start_date):
     """Filter the DataFrame by date, keeping only rows after the start date."""
     df[date_column] = pd.to_datetime(df[date_column], errors='coerce')
-    filtered_df = df[df[date_column] > start_date]
+    filtered_df = df[df[date_column] >= start_date]
     filtered_df.dropna(inplace=True)
     return filtered_df
 
