@@ -6,8 +6,9 @@ from sklearn.model_selection import train_test_split
 from pmdarima import auto_arima
 import pickle
 from sklearn.metrics import mean_absolute_error, mean_squared_error
+import os
 
-BASE_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../.."))
+BASE_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), "../.."))
 TEST_DATA_PATH = os.path.join(BASE_PATH, "data/raw")
 MODEL_PATH = os.path.join(BASE_PATH, "src/data/redfinprediction")
 
@@ -83,7 +84,7 @@ def calculate_metrics(y_true, y_pred):
     }
 
 def evaluate_arima(test_df, model, output_path=None):
-   """
+    """
     Evaluate an ARIMA model on test data.
 
     This function uses the provided ARIMA model to generate forecasts and evaluates its performance
@@ -93,10 +94,11 @@ def evaluate_arima(test_df, model, output_path=None):
         test_df (pd.DataFrame): The test data containing the target variable.
             Must include the `median_sale_price` column.
         model (ARIMAResults): A fitted ARIMA model to be evaluated.
+        output_path (str, optional): Path to save the predictions as a CSV file.
+            Defaults to 'data/machinelearningresults/arima_predictions.csv'.
 
     Returns:
         dict: A dictionary of evaluation metrics for the ARIMA model.
-        a dataframe containing the arima prediction results.
     """
     if output_path is None:
         output_path = os.path.join(BASE_PATH, "data/machinelearningresults/arima_predictions.csv")
@@ -110,7 +112,7 @@ def evaluate_arima(test_df, model, output_path=None):
     predictions_df = pd.DataFrame(predictions, columns=["ARIMA_Predicted_Value"])
     predictions_df.index.name = "Date"
     predictions_df.to_csv(output_path)
-    print("ARIMA predictions saved to 'arima_predictions.csv'.")
+    print(f"ARIMA predictions saved to '{output_path}'.")
 
     # Calculate metrics
     metrics = calculate_metrics(y_test, predictions)
@@ -120,7 +122,16 @@ def evaluate_arima(test_df, model, output_path=None):
         print(f"{key}: {value:.2f}")
     return metrics
 
-def evaluate_sarimax(test_df, model, output_path=None)
+
+    # Calculate metrics
+    metrics = calculate_metrics(y_test, predictions)
+
+    print("ARIMA Evaluation Metrics:")
+    for key, value in metrics.items():
+        print(f"{key}: {value:.2f}")
+    return metrics
+
+def evaluate_sarimax(test_df, model, output_path=None):
     """
     Evaluate a SARIMAX model on test data with exogenous variables.
 

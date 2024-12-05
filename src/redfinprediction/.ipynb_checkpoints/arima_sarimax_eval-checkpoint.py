@@ -6,8 +6,9 @@ from sklearn.model_selection import train_test_split
 from pmdarima import auto_arima
 import pickle
 from sklearn.metrics import mean_absolute_error, mean_squared_error
+import os
 
-BASE_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../.."))
+BASE_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), "../.."))
 TEST_DATA_PATH = os.path.join(BASE_PATH, "data/raw")
 MODEL_PATH = os.path.join(BASE_PATH, "src/data/redfinprediction")
 
@@ -30,7 +31,7 @@ def load_test_data(file_path):
     df['period_end'] = pd.to_datetime(df['period_end'])
     df.set_index('period_end', inplace=True)
     return df
-    
+
 def load_model_from_pickle(filename):
     """
     Load a model from a pickle file.
@@ -74,7 +75,7 @@ def calculate_metrics(y_true, y_pred):
     mse = mean_squared_error(y_true, y_pred)
     rmse = mse ** 0.5
     mape = (np.abs((y_true - y_pred) / y_true).mean()) * 100
-    
+
     return {
         "MAE": mae,
         "MSE": mse,
@@ -83,7 +84,7 @@ def calculate_metrics(y_true, y_pred):
     }
 
 def evaluate_arima(test_df, model, output_path=None):
-   """
+    """
     Evaluate an ARIMA model on test data.
 
     This function uses the provided ARIMA model to generate forecasts and evaluates its performance
@@ -93,14 +94,15 @@ def evaluate_arima(test_df, model, output_path=None):
         test_df (pd.DataFrame): The test data containing the target variable.
             Must include the `median_sale_price` column.
         model (ARIMAResults): A fitted ARIMA model to be evaluated.
+        output_path (str, optional): Path to save the predictions as a CSV file.
+            Defaults to 'data/machinelearningresults/arima_predictions.csv'.
 
     Returns:
         dict: A dictionary of evaluation metrics for the ARIMA model.
-        a dataframe containing the arima prediction results.
     """
     if output_path is None:
         output_path = os.path.join(BASE_PATH, "data/machinelearningresults/arima_predictions.csv")
-        
+
     y_test = test_df['median_sale_price']
     predictions = model.forecast(steps=len(test_df))
     predictions = pd.Series(predictions)
@@ -110,17 +112,26 @@ def evaluate_arima(test_df, model, output_path=None):
     predictions_df = pd.DataFrame(predictions, columns=["ARIMA_Predicted_Value"])
     predictions_df.index.name = "Date"
     predictions_df.to_csv(output_path)
-    print("ARIMA predictions saved to 'arima_predictions.csv'.")
-    
+    print(f"ARIMA predictions saved to '{output_path}'.")
+
     # Calculate metrics
     metrics = calculate_metrics(y_test, predictions)
-    
+
     print("ARIMA Evaluation Metrics:")
     for key, value in metrics.items():
         print(f"{key}: {value:.2f}")
     return metrics
 
-def evaluate_sarimax(test_df, model, output_path=None)
+
+    # Calculate metrics
+    metrics = calculate_metrics(y_test, predictions)
+
+    print("ARIMA Evaluation Metrics:")
+    for key, value in metrics.items():
+        print(f"{key}: {value:.2f}")
+    return metrics
+
+def evaluate_sarimax(test_df, model, output_path=None):
     """
     Evaluate a SARIMAX model on test data with exogenous variables.
 
@@ -140,8 +151,8 @@ def evaluate_sarimax(test_df, model, output_path=None)
     """
     if output_path is None:
         output_path = os.path.join(BASE_PATH, "data/machinelearningresults/sarimax_predictions.csv")
-    
-    X_test = test_df[['demand_supply_ratio', 'price_drop_ratio', 'pending_to_sold_ratio', 
+
+    X_test = test_df[['demand_supply_ratio', 'price_drop_ratio', 'pending_to_sold_ratio',
                       'market_heat_index', 'price_change_vs_inventory', 'sales_change_vs_supply']]
     y_test = test_df['median_sale_price']
     predictions = pd.Series(model.predict(start=0, end=len(y_test) - 1, exog=X_test))
@@ -152,40 +163,37 @@ def evaluate_sarimax(test_df, model, output_path=None)
     predictions_df.index.name = "Date"
     predictions_df.to_csv(output_path)
     print("SARIMAX predictions saved to 'sarimax_predictions.csv'.")
-    
+
     metrics = calculate_metrics(y_test, predictions)
-    
+
     print("SARIMAX Evaluation Metrics:")
     for key, value in metrics.items():
         print(f"{key}: {value:.2f}")
     return metrics
 
-# def main(test_file_path, arima_filename, sarimax_filename):
-#     # Load test data
-#     test_df = load_test_data(test_file_path)
-    
-#     # Load models
-#     arima_model = load_model_from_pickle(arima_filename)
-#     sarimax_model = load_model_from_pickle(sarimax_filename)
-    
-#     # Evaluate ARIMA
-#     print("\nEvaluating ARIMA Model...")
-#     arima_metrics = evaluate_arima(test_df, arima_model)
-    
-#     # Evaluate SARIMAX
-#     print("\nEvaluating SARIMAX Model...")
-#     sarimax_metrics = evaluate_sarimax(test_df, sarimax_model)
-    
-#     return arima_metrics, sarimax_metrics
+def main(test_file_path, arima_filename, sarimax_filename):
+    # Load test data
+    test_df = load_test_data(test_file_path)
+
+    # Load models
+    arima_model = load_model_from_pickle(arima_filename)
+    sarimax_model = load_model_from_pickle(sarimax_filename)
+
+    # Evaluate ARIMA
+    print("\nEvaluating ARIMA Model...")
+    arima_metrics = evaluate_arima(test_df, arima_model)
+
+    # Evaluate SARIMAX
+    print("\nEvaluating SARIMAX Model...")
+    sarimax_metrics = evaluate_sarimax(test_df, sarimax_model)
+
+    return arima_metrics, sarimax_metrics
 
 
-# # Parameters for evaluation
-# test_file_path = os.path.join(TEST_DATA_PATH, "test_data.csv")
-# arima_filename = "arima_final.pkl"
-# sarimax_filename = "sarimax_final.pkl"
+# Parameters for evaluation
+test_file_path = os.path.join(TEST_DATA_PATH, "test_data.csv")
+arima_filename = "arima_final.pkl"
+sarimax_filename = "sarimax_final.pkl"
 
-# # Run the main function
-# if __name__ == "__main__":
-#     main(test_file_path, arima_filename, sarimax_filename)
-
-
+if __name__ == "__main__":
+    main(test_file_path, arima_filename, sarimax_filename)

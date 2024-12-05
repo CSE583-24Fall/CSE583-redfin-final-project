@@ -1,4 +1,4 @@
-name: airflow-env
+name: redfin_prediction_env
 channels:
   - conda-forge
   - defaults

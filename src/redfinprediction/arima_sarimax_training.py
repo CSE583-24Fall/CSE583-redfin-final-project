@@ -7,8 +7,9 @@ from statsmodels.tsa.statespace.sarimax import SARIMAX
 from pmdarima import auto_arima
 import pickle
 from sklearn.metrics import mean_absolute_error, mean_squared_error
+import os
 
-BASE_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../.."))
+BASE_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), "../.."))
 DATA_PATH = os.path.join(BASE_PATH, "data/raw")
 
 # Training component

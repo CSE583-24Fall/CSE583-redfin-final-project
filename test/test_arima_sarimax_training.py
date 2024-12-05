@@ -10,7 +10,7 @@ from src.redfinprediction.arima_sarimax_training import (
 )
 
 # Update BASE_PATH to point to repository root
-BASE_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
+BASE_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 DATA_PATH = os.path.join(BASE_PATH, "data/raw")
 
 def test_load_and_preprocess_data():
