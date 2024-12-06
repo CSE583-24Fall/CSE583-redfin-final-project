@@ -1,6 +1,12 @@
 import unittest
 from unittest.mock import patch, MagicMock, mock_open
 import requests
+import sys
+import os
+
+# Add the 'src' directory to sys.path so Python can find the redfinprediction package
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../src')))
+
 from redfinprediction.downloadrawdata import download_and_unzip_file
 
 
