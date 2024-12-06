@@ -15,9 +15,12 @@ dependencies:
   - pytest-mock
   - pickle5
   - streamlit  # Added Streamlit for building interactive web apps
+  - tensorflow
+  - unittest
   - pip
   - pip:
       - black
       - flake8
       - mypy
       - toml==0.10.2
+      
