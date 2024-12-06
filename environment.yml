@@ -16,7 +16,6 @@ dependencies:
   - streamlit
   - requests
   - pip
-  - pickle5  
   - pip:
       - black
       - flake8
