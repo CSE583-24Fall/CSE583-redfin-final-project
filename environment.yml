@@ -13,9 +13,10 @@ dependencies:
   - scikit-learn
   - pytest
   - pytest-mock
-  - pickle5
-  - streamlit  # Added Streamlit for building interactive web apps
+  - streamlit
+  - requests
   - pip
+  - pickle5  
   - pip:
       - black
       - flake8
