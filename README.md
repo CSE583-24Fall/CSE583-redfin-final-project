@@ -105,7 +105,6 @@ them by adjusting hyperparameters, and evaluate performance using metrics
 like MAE and R-squared. Visualization is available in Tableau, where you 
 can compare model predictions and track performance over time.
 
----
 
 ## For Non-Tech Individuals
 
@@ -114,7 +113,6 @@ tool will display predicted median home sale prices along with historical
 data trends. You can also compare different predictive models and gain 
 insights into real estate market trends.
 
----
 
 ## Use Cases
 
@@ -126,7 +124,6 @@ for buying or selling properties.
   Refine and enhance machine learning models to ensure the tool delivers 
 the most accurate predictions for users.
 
----
 
 ## Requests
 
@@ -135,7 +132,6 @@ estate prices across various markets. To request additional cities or
 regions, suggest new features, or propose improvements, please open an 
 issue.
 
----
 
 ## Team Contributions
 
