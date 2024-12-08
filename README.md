@@ -67,14 +67,21 @@ predictions, and track performance.
 The tool employs four machine learning methods to predict median sale 
 prices:
 
-- **Ensemble (Random Forest)**: Handles non-linear relationships, reduces 
-overfitting, and identifies important features.
+- **Ensemble (Random Forest)**: Robust to overfitting, handles non-linear 
+relationships, reduces noise by aggregating multiple decision trees, and 
+identifies important features that impact property values.
 - **LSTM (Long Short-Term Memory)**: Models temporal dependencies and 
-long-term trends in time-series data.
+long-term trends in time-series data, capturing complex, non-linear 
+relationships from historical data and external variables for more 
+accurate predictions.
 - **ARIMA (AutoRegressive Integrated Moving Average)**: Effective for 
-short-term predictions based on univariate data.
-- **SARIMAX (Seasonal ARIMAX)**: Advanced model that incorporates 
-seasonality and external factors for more comprehensive forecasts.
+short-term predictions based on univariate data, captures underlying 
+trends, but less suited for incorporating external variables compared to 
+more advanced models.
+- **SARIMAX (Seasonal Autoregressive Integrated Moving Average with 
+Exogenous Regressors)**: Advanced model that captures trends, cycles, 
+seasonal patterns, and external factors, making it a more comprehensive 
+forecasting tool for predicting future median sale prices.
 
 ### Model Performance
 
@@ -88,20 +95,74 @@ R-squared score.
 
 ## Usage
 
-### For Tech Users
+## For Tech Individuals
 
-1. Clone the repository and set up the environment.
-2. The ETL pipeline is automated for data collection and processing.
-3. Run the models (Ensemble, LSTM, ARIMA, SARIMAX) locally or on a cloud 
-platform.
-4. Evaluate model performance using metrics like **MAE** and 
-**R-squared**.
-5. Visualize the results in **Tableau** and compare model predictions.
+To get started, clone the repository and set up the environment. The ETL 
+pipeline is fully automated: it collects data from Redfin’s data center, 
+processes it, and stores it in Azure Blob Storage. You can run models 
+locally or on a cloud platform (Ensemble, LSTM, ARIMA, SARIMAX), fine-tune 
+them by adjusting hyperparameters, and evaluate performance using metrics 
+like MAE and R-squared. Visualization is available in Tableau, where you 
+can compare model predictions and track performance over time.
 
-### For Non-Tech Users
+---
 
-- Visit the interactive dashboard.
-- Select your preferred time frame and view predicted median sale prices 
-for homes.
-- Compare predictive 
+## For Non-Tech Individuals
 
+Visit the interactive dashboard to select your desired time frame. The 
+tool will display predicted median home sale prices along with historical 
+data trends. You can also compare different predictive models and gain 
+insights into real estate market trends.
+
+---
+
+## Use Cases
+
+- **Homebuyers, Real Estate Investors, and Agents**:  
+  Predict future home prices, track trends, and make data-driven decisions 
+for buying or selling properties.
+
+- **Data Scientists**:  
+  Refine and enhance machine learning models to ensure the tool delivers 
+the most accurate predictions for users.
+
+---
+
+## Requests
+
+RedfinPredict aims to provide accurate, up-to-date predictions for real 
+estate prices across various markets. To request additional cities or 
+regions, suggest new features, or propose improvements, please open an 
+issue.
+
+---
+
+## Team Contributions
+
+- **Kuan-Wei (Rome) Lin**:  
+  - Project Manager  
+  - Designed and implemented the ETL pipeline, including data cleaning, 
+preprocessing, and unit tests.
+
+- **Hongfan Lu**:  
+  - Developed and fine-tuned ARIMA and SARIMAX models for time series 
+forecasting, including corresponding unit tests.  
+  - Organized models on Streamlit for comparison of prediction accuracy.  
+  - Code Review, setup of `toml` and `yml` files, and functions 
+documentation.
+
+- **Aishwary Jadhav**:  
+  - Handled data manipulation.  
+  - Built an ensemble model using Random Forest and performed feature 
+importance analysis, with unit tests.
+
+- **Maitreyi Ekbote**:  
+  - Designed and trained the LSTM model for advanced time series 
+forecasting, with unit tests.
+
+- **Ching-Ping (CP) Chan**:  
+  - Set up CI.  
+  - Designed the Tableau dashboard.  
+  - Created README documentation.
+
+---
