@@ -95,7 +95,7 @@ R-squared score.
 
 ## Usage
 
-## For Tech Individuals
+### For Tech Individuals
 
 To get started, clone the repository and set up the environment. The ETL 
 pipeline is fully automated: it collects data from Redfin’s data center, 
@@ -106,7 +106,7 @@ like MAE and R-squared. Visualization is available in Tableau, where you
 can compare model predictions and track performance over time.
 
 
-## For Non-Tech Individuals
+### For Non-Tech Individuals
 
 Visit the interactive dashboard to select your desired time frame. The 
 tool will display predicted median home sale prices along with historical 
