@@ -105,7 +105,6 @@ them by adjusting hyperparameters, and evaluate performance using metrics
 like MAE and R-squared. Visualization is available in Tableau, where you 
 can compare model predictions and track performance over time.
 
-
 ### For Non-Tech Individuals
 
 Visit the interactive dashboard to select your desired time frame. The 
@@ -113,6 +112,11 @@ tool will display predicted median home sale prices along with historical
 data trends. You can also compare different predictive models and gain 
 insights into real estate market trends.
 
+Dashboard Preview:
+
+![Dashboard Screenshot](./images/dashboard.png)
+
+View full interactive dashboard by clicking the image above or following this [link](https://bit.ly/cse583project).
 
 ## Use Cases
 
@@ -124,14 +128,12 @@ for buying or selling properties.
   Refine and enhance machine learning models to ensure the tool delivers 
 the most accurate predictions for users.
 
-
 ## Requests
 
 RedfinPredict aims to provide accurate, up-to-date predictions for real 
 estate prices across various markets. To request additional cities or 
 regions, suggest new features, or propose improvements, please open an 
 issue.
-
 
 ## Team Contributions
 
@@ -160,5 +162,3 @@ forecasting, with unit tests.
   - Set up CI.  
   - Designed the Tableau dashboard.  
   - Created README documentation.
-
----
