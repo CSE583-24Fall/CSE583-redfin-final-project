@@ -105,7 +105,6 @@ them by adjusting hyperparameters, and evaluate performance using metrics
 like MAE and R-squared. Visualization is available in Tableau, where you 
 can compare model predictions and track performance over time.
 
-
 ### For Non-Tech Individuals
 
 Visit the interactive dashboard to select your desired time frame. The 
