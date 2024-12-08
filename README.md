@@ -113,6 +113,12 @@ tool will display predicted median home sale prices along with historical
 data trends. You can also compare different predictive models and gain 
 insights into real estate market trends.
 
+Dashboard Preview:
+
+![Dashboard Screenshot](./images/dashboard.png)
+
+View full interactive dashboard by clicking the image above or following this [link](https://bit.ly/cse583project).
+
 ## Use Cases
 
 - **Homebuyers, Real Estate Investors, and Agents**:  
