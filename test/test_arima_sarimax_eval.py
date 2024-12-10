@@ -2,6 +2,7 @@ import os
 import pytest
 import pandas as pd
 import pickle
+
 from unittest.mock import MagicMock
 from src.redfinprediction.arima_sarimax_eval import (
     load_test_data,
