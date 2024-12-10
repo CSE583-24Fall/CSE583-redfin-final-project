@@ -39,14 +39,14 @@ The final project directory consists of the following main subdirectories:
 
 - **`data/`**: Contains raw data, cleaned data, and predictions.
 - **`docs/`**: Holds the technology review files.
-- **`src/`**: Includes code for the ETL pipeline, real-time data 
-processing, and machine learning model comparisons (Streamlit app).
-- **`tests/`**: Contains unit tests for the ETL pipeline and machine 
-learning code.
+- **`src/`**: Includes code for the ETL pipeline, data 
+processing, and machine learning model training and testing (Streamlit app).
+- **`test/`**: Contains unit tests for the ETL pipeline and machine 
+learning modules.
 
 ## Architecture Diagram
 
-Below is the architecture diagram of the RedfinPredict project.
+Here is the architecture diagram for the RedfinPredict project, designed for deployment on Azure Cloud. Initially, we planned to explore cloud computing with Azure. However, due to resource limitations, including restricted CPU and memory in the free-tier program, we decided to switch to using our local servers and GitHub for the project's deployment.
 
 ![Architecture Diagram](images/583archv1.png)
 
