@@ -10,7 +10,7 @@ packages = [{include = "src.redfinprediction"}]
 [tool.poetry.dependencies]
 python = "^3.10" # Updated to match the python version in the environment.yaml
 pandas = "^1.5.0"
-numpy = "^1.24.3"
+numpy = "^1.23.5"
 matplotlib = "^3.6.0"
 seaborn = "^0.12.0"
 scikit-learn = "^1.1.0"
