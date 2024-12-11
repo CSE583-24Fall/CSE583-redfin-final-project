@@ -37,7 +37,7 @@ Here is the architecture diagram for the RedfinPredict project, designed for dep
 
 ![Folder Structure](images/folder_structure.png)
 
-The project follows an automated ETL pipeline architecture:
+The project can be split into the following areas:
 
 1. **Data Extraction**: Data is collected from Redfin’s website. Inside the `src/redfinprediction` folder, the `downloadrawdata.py` file is used to extract raw data and store it in the `data/raw` folder. This script should be run every month to get the latest Redfin data, as it's updated monthly.
 
