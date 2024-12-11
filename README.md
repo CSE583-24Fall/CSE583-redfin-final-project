@@ -85,9 +85,10 @@ The tool employs four machine learning methods to predict median sale prices:
 
 **Dashboard Preview:**
 
-![Dashboard Screenshot](./images/dashboard.png)
+![Dashboard Screenshot](./images/finaldashboard.png)
 
-View the full interactive dashboard by clicking the image above or following this [link](https://bit.ly/cse583project).
+View machine learning predictions interactive dashboard by clicking the image above or following this [link](https://bit.ly/cse583project).
+View historical trends interactive dashboard by clicking on this [link](https://public.tableau.com/views/Book2_17339412137430/Dashboard1?:language=en-US&:sid=&:redirect=auth&:display_count=n&:origin=viz_share_link)
 
 ## Use Cases
 
