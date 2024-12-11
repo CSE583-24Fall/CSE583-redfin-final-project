@@ -105,6 +105,8 @@ RedfinPredict aims to provide accurate, up-to-date predictions for real estate p
   - Project Manager  
   - Researched and conducted test runs using Azure Cloud Computing.
   - Designed and implemented the ETL pipeline (downloadrawdata.py, redfindatacleaning.py, incrementalrun.py) and 3 corresponding unit tests.
+  - Designed and made the historical trend Tableau dashboard.  
+
 
 - **Hongfan Lu**:  
   - Developed and fine-tuned ARIMA and SARIMAX models (arima_sarimax_training.py, arima_sarimax_eval.py) for time series forecasting, including corresponding unit tests.  
@@ -120,7 +122,7 @@ RedfinPredict aims to provide accurate, up-to-date predictions for real estate p
 
 - **Ching-Ping (CP) Chan**:  
   - Set up CI.  
-  - Designed the Tableau dashboard.  
+  - Designed and made the machine learning predictions Tableau dashboard.  
   - Created README documentation.
 
 ## Challenges and Future Work
